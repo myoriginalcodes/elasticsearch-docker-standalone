@@ -1,0 +1,40 @@
+###############################################################################
+#                          Elasticsearch Studies                              #
+###############################################################################
+version: '3.9'
+
+services:
+
+    elasticsearch-sharetheco-de:
+        container_name: elasticsearch-sharetheco-de
+        build: ./docker/elasticsearch
+        restart: unless-stopped
+        volumes:
+            - './docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
+            - './docker/elasticsearch/config/users:/usr/share/elasticsearch/config/users'
+            - './docker/elasticsearch/config/users_roles:/usr/share/elasticsearch/config/users_roles'
+            - './storage/data/elasticsearch:/usr/share/elasticsearch/data'
+            - './storage/logs/elasticsearch:/usr/share/elasticsearch/logs'
+        ports:
+            - "${ELASTIC_EXTERNAL_PORT}:${ELASTIC_TCP_PORT}"
+        environment:
+            http.port: ${ELASTIC_TCP_PORT}
+            ES_JAVA_OPTS: -Xms512m -Xmx512m
+            ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+
+    kibana-sharetheco-de:
+        container_name: kibana-sharetheco-de
+        build: ./docker/kibana
+        restart: unless-stopped
+        volumes:
+            - './docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z'
+            - './storage/logs/kibana:/var/log/kibana'
+        ports:
+            - "${KIBANA_EXTERNAL_PORT}:${KIBANA_TCP_PORT}"
+        environment:
+            ELASTIC_SEARCH_HOST_URL: ${ELASTIC_SEARCH_HOST_URL}
+            KIBANA_TCP_PORT: ${KIBANA_TCP_PORT}
+            KIBANA_INTERNAL_USER: ${KIBANA_INTERNAL_USER}
+            KIBANA_INTERNAL_PASSWORD: ${KIBANA_INTERNAL_PASSWORD}
+        depends_on:
+            - elasticsearch-sharetheco-de

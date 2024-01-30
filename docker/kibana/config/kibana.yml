@@ -1,0 +1,50 @@
+---
+## Default Kibana configuration from Kibana base image.
+## https://github.com/elastic/kibana/blob/main/src/dev/build/tasks/os_packages/docker_generator/templates/kibana_yml.template.ts
+#
+server.name: kibana-server
+server.host: 0.0.0.0
+server.port: ${KIBANA_TCP_PORT}
+elasticsearch.hosts: [ "${ELASTIC_SEARCH_HOST_URL}" ]
+
+monitoring.ui.container.elasticsearch.enabled: true
+monitoring.ui.container.logstash.enabled: true
+
+## X-Pack security credentials
+#
+elasticsearch.username: ${KIBANA_INTERNAL_USER}
+elasticsearch.password: ${KIBANA_INTERNAL_PASSWORD}
+
+## Logging definitions
+#
+logging.appenders:
+    server-log:
+      type: rolling-file
+      fileName: /var/log/kibana/kibana.log
+      policy:
+        type: size-limit
+        size: 50mb
+      strategy:
+        type: numeric
+        pattern: '-%i'
+        max: 10
+      layout:
+        type: pattern
+        pattern: "[%date] [%level] [%logger] [%meta] %message"
+
+logging.root.appenders: ["server-log"]
+
+
+
+## Encryption keys (optional but highly recommended)
+##
+## Generate with either
+##  $ docker container run --rm docker.elastic.co/kibana/kibana:8.6.2 bin/kibana-encryption-keys generate
+##  $ openssl rand -hex 32
+##
+## https://www.elastic.co/guide/en/kibana/current/using-kibana-with-security.html
+## https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
+#
+#xpack.security.encryptionKey:
+#xpack.encryptedSavedObjects.encryptionKey:
+#xpack.reporting.encryptionKey:

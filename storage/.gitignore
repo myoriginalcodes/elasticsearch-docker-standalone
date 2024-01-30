@@ -1,0 +1,7 @@
+*
+!logs
+!logs/elasticsearch
+!logs/kibana
+!data
+!data/elasticsearch
+!**/.gitignore
