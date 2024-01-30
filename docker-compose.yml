@@ -1,5 +1,6 @@
 ###############################################################################
-#                          Elasticsearch Studies                              #
+#                          Elasticsearch + Kibana                             #
+#                            by sharethecode.de                               #
 ###############################################################################
 version: '3.9'
 
@@ -13,6 +14,8 @@ services:
             - './docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
             - './docker/elasticsearch/config/users:/usr/share/elasticsearch/config/users'
             - './docker/elasticsearch/config/users_roles:/usr/share/elasticsearch/config/users_roles'
+            - './docker/elasticsearch/scripts:/usr/share/elasticsearch/scripts'
+            - './docker/elasticsearch/samples:/usr/share/elasticsearch/samples'
             - './storage/data/elasticsearch:/usr/share/elasticsearch/data'
             - './storage/logs/elasticsearch:/usr/share/elasticsearch/logs'
         ports:
@@ -21,6 +24,7 @@ services:
             http.port: ${ELASTIC_TCP_PORT}
             ES_JAVA_OPTS: -Xms512m -Xmx512m
             ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+            ELASTIC_TCP_PORT: ${ELASTIC_TCP_PORT}
 
     kibana-sharetheco-de:
         container_name: kibana-sharetheco-de
