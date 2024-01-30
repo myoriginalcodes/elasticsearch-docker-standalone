@@ -1,0 +1,9 @@
+{
+	"mappings" : {
+		"properties" : {
+			"year" : {"type": "keyword" },
+			"genre" : {"type": "keyword" },
+			"title" : { "type" : "keyword" }
+		}
+	}
+}
