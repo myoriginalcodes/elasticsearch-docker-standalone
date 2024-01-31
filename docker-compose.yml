@@ -25,6 +25,9 @@ services:
             ES_JAVA_OPTS: -Xms512m -Xmx512m
             ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
             ELASTIC_TCP_PORT: ${ELASTIC_TCP_PORT}
+            ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
+            SCRIPT_USER: ${SCRIPT_USER}
+            SCRIPT_USER_PASSWORD: ${SCRIPT_USER_PASSWORD}
 
     kibana-sharetheco-de:
         container_name: kibana-sharetheco-de
@@ -36,7 +39,9 @@ services:
         ports:
             - "${KIBANA_EXTERNAL_PORT}:${KIBANA_TCP_PORT}"
         environment:
-            ELASTIC_SEARCH_HOST_URL: ${ELASTIC_SEARCH_HOST_URL}
+            ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
+            KIBANA_SERVER_NAME: ${KIBANA_SERVER_NAME}
+            KIBANA_SERVER_HOST: ${KIBANA_SERVER_HOST}
             KIBANA_TCP_PORT: ${KIBANA_TCP_PORT}
             KIBANA_INTERNAL_USER: ${KIBANA_INTERNAL_USER}
             KIBANA_INTERNAL_PASSWORD: ${KIBANA_INTERNAL_PASSWORD}
