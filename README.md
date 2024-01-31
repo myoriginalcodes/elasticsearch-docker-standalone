@@ -1,4 +1,4 @@
-# elasticsearch-sharetheco-de
+# elasticsearch by sharetheco.de
 
 This repository was created to study the elasticsearch stack
 
@@ -9,3 +9,7 @@ as elasticsearch do not allows duplicated indexes. The data it self will be dupl
 So to avoid "dirty" data, make sure to run this command only once.
 
 docker exec elasticsearch-sharetheco-de bash /usr/share/elasticsearch/scripts/import-samples.sh
+
+This command creates two indexes:
+    - shakespeare
+    - movies
