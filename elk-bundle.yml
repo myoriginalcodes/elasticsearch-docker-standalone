@@ -1,0 +1,37 @@
+###############################################################################
+#                               Elasticsearch                                 #
+#                             by myoriginalcodes                              #
+###############################################################################
+version: '3.9'
+
+services:
+
+    elasticsearch:
+        container_name: ${ELASTICSEARCH_SERVER_NAME}
+        build: ./docker
+        restart: unless-stopped
+        volumes:
+            - '${ELASTICSEARCH_CONFIG_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
+            - '${ELASTICSEARCH_CONFIG_USERS}:/usr/share/elasticsearch/config/users'
+            - '${ELASTICSEARCH_CONFIG_USERS_ROLES}:/usr/share/elasticsearch/config/users_roles'
+            - '${ELASTICSEARCH_SCRIPTS}:/usr/share/elasticsearch/scripts'
+            - '${ELASTICSEARCH_SAMPLES}:/usr/share/elasticsearch/samples'
+            - '${ELASTICSEARCH_DATA_VOLUME}:/usr/share/elasticsearch/data'
+            - '${ELASTICSEARCH_LOGS_VOLUME}:/usr/share/elasticsearch/logs'
+        ports:
+            - "${ELASTIC_EXTERNAL_PORT}:${ELASTIC_TCP_PORT}"
+        environment:
+            http.port: ${ELASTIC_TCP_PORT}
+            ES_JAVA_OPTS: -Xms512m -Xmx512m
+            ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+            ELASTIC_TCP_PORT: ${ELASTIC_TCP_PORT}
+            ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
+            SCRIPT_USER: ${SCRIPT_USER}
+            SCRIPT_USER_PASSWORD: ${SCRIPT_USER_PASSWORD}
+        networks:
+            - elk
+
+networks:
+    elk:
+      external: true
+      name: ${ELASTICSEARCH_NETWORK}
