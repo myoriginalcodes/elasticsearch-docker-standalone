@@ -29,9 +29,9 @@ services:
             SCRIPT_USER: ${SCRIPT_USER}
             SCRIPT_USER_PASSWORD: ${SCRIPT_USER_PASSWORD}
         networks:
-            - elk
+            - bundle
 
 networks:
-    elk:
+    bundle:
       external: true
       name: ${ELASTICSEARCH_NETWORK}
