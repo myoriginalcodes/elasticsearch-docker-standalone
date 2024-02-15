@@ -1,23 +1,23 @@
 ###############################################################################
-#                          Elasticsearch + Kibana                             #
-#                             by sharetheco.de                                #
+#                               Elasticsearch                                 #
+#                             by myoriginalcodes                              #
 ###############################################################################
 version: '3.9'
 
 services:
 
-    elasticsearch-sharetheco-de:
-        container_name: elasticsearch-sharetheco-de
-        build: ./docker/elasticsearch
+    elasticsearch:
+        container_name: ${ELASTICSEARCH_SERVER_NAME}
+        build: ./docker
         restart: unless-stopped
         volumes:
-            - './docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
-            - './docker/elasticsearch/config/users:/usr/share/elasticsearch/config/users'
-            - './docker/elasticsearch/config/users_roles:/usr/share/elasticsearch/config/users_roles'
-            - './docker/elasticsearch/scripts:/usr/share/elasticsearch/scripts'
-            - './docker/elasticsearch/samples:/usr/share/elasticsearch/samples'
-            - './storage/data/elasticsearch:/usr/share/elasticsearch/data'
-            - './storage/logs/elasticsearch:/usr/share/elasticsearch/logs'
+            - '${ELASTICSEARCH_CONFIG_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
+            - '${ELASTICSEARCH_CONFIG_USERS}:/usr/share/elasticsearch/config/users'
+            - '${ELASTICSEARCH_CONFIG_USERS_ROLES}:/usr/share/elasticsearch/config/users_roles'
+            - '${ELASTICSEARCH_SCRIPTS}:/usr/share/elasticsearch/scripts'
+            - '${ELASTICSEARCH_SAMPLES}:/usr/share/elasticsearch/samples'
+            - '${ELASTICSEARCH_DATA_VOLUME}:/usr/share/elasticsearch/data'
+            - '${ELASTICSEARCH_LOGS_VOLUME}:/usr/share/elasticsearch/logs'
         ports:
             - "${ELASTIC_EXTERNAL_PORT}:${ELASTIC_TCP_PORT}"
         environment:
@@ -28,22 +28,3 @@ services:
             ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
             SCRIPT_USER: ${SCRIPT_USER}
             SCRIPT_USER_PASSWORD: ${SCRIPT_USER_PASSWORD}
-
-    kibana-sharetheco-de:
-        container_name: kibana-sharetheco-de
-        build: ./docker/kibana
-        restart: unless-stopped
-        volumes:
-            - './docker/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z'
-            - './storage/logs/kibana:/var/log/kibana'
-        ports:
-            - "${KIBANA_EXTERNAL_PORT}:${KIBANA_TCP_PORT}"
-        environment:
-            ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
-            KIBANA_SERVER_NAME: ${KIBANA_SERVER_NAME}
-            KIBANA_SERVER_HOST: ${KIBANA_SERVER_HOST}
-            KIBANA_TCP_PORT: ${KIBANA_TCP_PORT}
-            KIBANA_INTERNAL_USER: ${KIBANA_INTERNAL_USER}
-            KIBANA_INTERNAL_PASSWORD: ${KIBANA_INTERNAL_PASSWORD}
-        depends_on:
-            - elasticsearch-sharetheco-de
