@@ -12,6 +12,7 @@ services:
         restart: unless-stopped
         volumes:
             - '${ELASTICSEARCH_CONFIG_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
+            - '${ELASTICSEARCH_CONFIG_ROLES}:/usr/share/elasticsearch/config/roles.yml'
             - '${ELASTICSEARCH_CONFIG_USERS}:/usr/share/elasticsearch/config/users'
             - '${ELASTICSEARCH_CONFIG_USERS_ROLES}:/usr/share/elasticsearch/config/users_roles'
             - '${ELASTICSEARCH_SCRIPTS}:/usr/share/elasticsearch/scripts'

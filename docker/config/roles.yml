@@ -1,0 +1,6 @@
+logs_writer:
+  cluster: ["monitor", "manage_ilm", "manage_index_templates"]
+  indices:
+    - names: ["logs-generic-default", "logstash-*", "ecs-logstash-*", "logstash", "ecs-logstash"]
+      privileges: ["write" ,"create", "create_index", "manage", "manage_ilm"]
+  run_as: []

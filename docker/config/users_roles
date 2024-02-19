@@ -1,1 +1,2 @@
+logs_writer:logstash_internal
 kibana_system:kibana_internal
