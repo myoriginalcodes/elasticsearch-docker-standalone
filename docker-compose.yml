@@ -20,12 +20,12 @@ services:
             - '${ELASTICSEARCH_DATA_VOLUME}:/usr/share/elasticsearch/data'
             - '${ELASTICSEARCH_LOGS_VOLUME}:/usr/share/elasticsearch/logs'
         ports:
-            - "${ELASTIC_EXTERNAL_PORT}:${ELASTIC_TCP_PORT}"
+            - "${ELASTICSEARCH_EXTERNAL_PORT}:${ELASTICSEARCH_TCP_PORT}"
         environment:
-            http.port: ${ELASTIC_TCP_PORT}
+            http.port: ${ELASTICSEARCH_TCP_PORT}
             ES_JAVA_OPTS: -Xms512m -Xmx512m
-            ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-            ELASTIC_TCP_PORT: ${ELASTIC_TCP_PORT}
+            ELASTIC_PASSWORD: ${ELASTICSEARCH_PASSWORD}
+            ELASTIC_TCP_PORT: ${ELASTICSEARCH_TCP_PORT}
             ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_HOST_URL}
             SCRIPT_USER: ${SCRIPT_USER}
             SCRIPT_USER_PASSWORD: ${SCRIPT_USER_PASSWORD}

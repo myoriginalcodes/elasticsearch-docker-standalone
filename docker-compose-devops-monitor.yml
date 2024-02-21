@@ -1,0 +1,38 @@
+###############################################################################
+#                               Elasticsearch                                 #
+#                             by myoriginalcodes                              #
+###############################################################################
+version: '3.9'
+
+services:
+
+    elasticsearch:
+        container_name: ${ELASTICSEARCH_MONITOR_SERVER_NAME}
+        build: ./docker
+        restart: unless-stopped
+        volumes:
+            - '${ELASTICSEARCH_MONITOR_CONFIG_FILE}:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z'
+            - '${ELASTICSEARCH_MONITOR_CONFIG_ROLES}:/usr/share/elasticsearch/config/roles.yml'
+            - '${ELASTICSEARCH_MONITOR_CONFIG_USERS}:/usr/share/elasticsearch/config/users'
+            - '${ELASTICSEARCH_MONITOR_CONFIG_USERS_ROLES}:/usr/share/elasticsearch/config/users_roles'
+            - '${ELASTICSEARCH_MONITOR_SCRIPTS}:/usr/share/elasticsearch/scripts'
+            - '${ELASTICSEARCH_MONITOR_SAMPLES}:/usr/share/elasticsearch/samples'
+            - '${ELASTICSEARCH_MONITOR_DATA_VOLUME}:/usr/share/elasticsearch/data'
+            - '${ELASTICSEARCH_MONITOR_LOGS_VOLUME}:/usr/share/elasticsearch/logs'
+        ports:
+            - "${ELASTICSEARCH_MONITOR_EXTERNAL_PORT}:${ELASTICSEARCH_MONITOR_TCP_PORT}"
+        environment:
+            http.port: ${ELASTICSEARCH_MONITOR_TCP_PORT}
+            ES_JAVA_OPTS: -Xms512m -Xmx512m
+            ELASTIC_PASSWORD: ${ELASTICSEARCH_MONITOR_PASSWORD}
+            ELASTIC_TCP_PORT: ${ELASTICSEARCH_MONITOR_TCP_PORT}
+            ELASTICSEARCH_HOST_URL: ${ELASTICSEARCH_MONITOR_HOST_URL}
+            SCRIPT_USER: ${MONITOR_SCRIPT_USER}
+            SCRIPT_USER_PASSWORD: ${MONITOR_SCRIPT_USER_PASSWORD}
+        networks:
+            - bundle
+
+networks:
+    bundle:
+      external: true
+      name: ${ELASTICSEARCH_NETWORK}
